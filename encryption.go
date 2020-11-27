@@ -19,7 +19,7 @@ type PublicKey struct {
 	m *big.Int
 }
 
-func CouplePublic(numBit int) publicKey{
+func CouplePublic(numBit int) PublicKey{
 
 	p, err := rand.Prime(rand.Reader, int(math.Pow(float64(2), float64(numBit))))
 
@@ -69,12 +69,12 @@ func CouplePublic(numBit int) publicKey{
 		}
 	}
 
-	pk := publicKey{n: n, m: m, e: e}
+	pk := PublicKey{n: n, m: m, e: e}
 
 	return pk
 }
 
-func AlgoEuclide(pubKey *publicKey) *big.Int{
+func AlgoEuclide(pubKey *PublicKey) *big.Int{
 	r := []*big.Int{pubKey.e, pubKey.m}
 	u := []*big.Int{big.NewInt(1), big.NewInt(0)}
 	v := []*big.Int{big.NewInt(0), big.NewInt(1)}
@@ -99,7 +99,7 @@ func AlgoEuclide(pubKey *publicKey) *big.Int{
 	return u[len(u) - 2]
 }
 
-func CouplePrivate(pubKey *publicKey) privateKey{
+func CouplePrivate(pubKey *PublicKey) PrivateKey{
 	m := pubKey.m
 	uFinal := AlgoEuclide(pubKey)
 	k := big.NewInt(-1)
@@ -113,10 +113,10 @@ func CouplePrivate(pubKey *publicKey) privateKey{
 		}
 	}
 
-	return privateKey{n: pubKey.n,u: uFinal}
+	return PrivateKey{n: pubKey.n,u: uFinal}
 }
 
-func Encryption(msg string, pubKey *publicKey) []*big.Int{
+func Encryption(msg string, pubKey *PublicKey) []*big.Int{
 	var ascii []*big.Int
 
 	runes := []rune(msg)
@@ -132,7 +132,7 @@ func Encryption(msg string, pubKey *publicKey) []*big.Int{
 	return ascii
 }
 
-func Decryption(msg []*big.Int, priKey *privateKey) string{
+func Decryption(msg []*big.Int, priKey *PrivateKey) string{
 	var str bytes.Buffer
 
 	for i := 0; i < len(msg); i++{
