@@ -69,13 +69,13 @@ func CouplePublic(numBit int) *PublicKey{
 		}
 	}
 
-	pk := PublicKey{n: n, m: m, e: e}
+	pk := PublicKey{N: n, M: m, E: e}
 
 	return &pk
 }
 
 func AlgoEuclide(pubKey *PublicKey) *big.Int{
-	r := []*big.Int{pubKey.e, pubKey.m}
+	r := []*big.Int{pubKey.E, pubKey.M}
 	u := []*big.Int{big.NewInt(1), big.NewInt(0)}
 	v := []*big.Int{big.NewInt(0), big.NewInt(1)}
 
@@ -100,7 +100,7 @@ func AlgoEuclide(pubKey *PublicKey) *big.Int{
 }
 
 func CouplePrivate(pubKey *PublicKey) *PrivateKey{
-	m := pubKey.m
+	m := pubKey.M
 	uFinal := AlgoEuclide(pubKey)
 	k := big.NewInt(-1)
 
@@ -113,7 +113,7 @@ func CouplePrivate(pubKey *PublicKey) *PrivateKey{
 		}
 	}
 
-	return &PrivateKey{n: pubKey.n,u: uFinal}
+	return &PrivateKey{N: pubKey.N, U: uFinal}
 }
 
 func Encryption(msg string, pubKey *PublicKey) []*big.Int{
@@ -126,7 +126,7 @@ func Encryption(msg string, pubKey *PublicKey) []*big.Int{
 
 		big_ascii := big.NewInt(ascii_code)
 
-		ascii = append(ascii, big.NewInt(0).Exp(big_ascii, pubKey.e, pubKey.n))
+		ascii = append(ascii, big.NewInt(0).Exp(big_ascii, pubKey.E, pubKey.N))
 	}
 
 	return ascii
@@ -136,7 +136,7 @@ func Decryption(msg []*big.Int, priKey *PrivateKey) string{
 	var str bytes.Buffer
 
 	for i := 0; i < len(msg); i++{
-		ascii := big.NewInt(0).Exp(msg[i], priKey.u, priKey.n)
+		ascii := big.NewInt(0).Exp(msg[i], priKey.U, priKey.N)
 		char := rune(ascii.Uint64())
 		str.WriteString(string(char))
 	}
