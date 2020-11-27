@@ -1,5 +1,6 @@
 package go_encryption
-
+/*
+*/
 import (
 	"log"
 	"math/big"
