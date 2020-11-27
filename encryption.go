@@ -9,14 +9,14 @@ import (
 )
 
 type PrivateKey struct {
-	n *big.Int
-	u *big.Int
+	N *big.Int
+	U *big.Int
 }
 
 type PublicKey struct {
-	n *big.Int
-	e *big.Int
-	m *big.Int
+	N *big.Int
+	E *big.Int
+	M *big.Int
 }
 
 func CouplePublic(numBit int) *PublicKey{
