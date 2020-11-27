@@ -19,7 +19,7 @@ type PublicKey struct {
 	m *big.Int
 }
 
-func CouplePublic(numBit int) PublicKey{
+func CouplePublic(numBit int) *PublicKey{
 
 	p, err := rand.Prime(rand.Reader, int(math.Pow(float64(2), float64(numBit))))
 
@@ -71,7 +71,7 @@ func CouplePublic(numBit int) PublicKey{
 
 	pk := PublicKey{n: n, m: m, e: e}
 
-	return pk
+	return &pk
 }
 
 func AlgoEuclide(pubKey *PublicKey) *big.Int{
@@ -99,7 +99,7 @@ func AlgoEuclide(pubKey *PublicKey) *big.Int{
 	return u[len(u) - 2]
 }
 
-func CouplePrivate(pubKey *PublicKey) PrivateKey{
+func CouplePrivate(pubKey *PublicKey) *PrivateKey{
 	m := pubKey.m
 	uFinal := AlgoEuclide(pubKey)
 	k := big.NewInt(-1)
@@ -113,7 +113,7 @@ func CouplePrivate(pubKey *PublicKey) PrivateKey{
 		}
 	}
 
-	return PrivateKey{n: pubKey.n,u: uFinal}
+	return &PrivateKey{n: pubKey.n,u: uFinal}
 }
 
 func Encryption(msg string, pubKey *PublicKey) []*big.Int{
