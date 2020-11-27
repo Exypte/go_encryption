@@ -8,12 +8,12 @@ import (
 	"bytes"
 )
 
-type privateKey struct {
+type PrivateKey struct {
 	n *big.Int
 	u *big.Int
 }
 
-type publicKey struct {
+type PublicKey struct {
 	n *big.Int
 	e *big.Int
 	m *big.Int
